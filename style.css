@@ -1,0 +1,266 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #CDEED9;
+}
+
+.titulo_inicial {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3CB4AC;
+    width: 100%;
+    height: 230px;
+}
+
+.footer {
+    width: 100%;
+    background-color: #184549;
+    height: 80px;
+    margin-top: 50px;
+}
+
+.info_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info_footer > h5, p {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-top: 20px;
+    color: white;
+    text-shadow: black 0.1em 0.1em 0.2em;
+    font-size: 20px;
+}
+
+h1 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: center;
+    color: white;
+    text-shadow: black 0.1em 0.1em 0.2em;
+    font-size: 40px;
+}
+
+.formulario {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-top: 50px;
+    opacity: 0.4;
+    transition: all 1s;
+}
+
+.formulario:hover {
+    opacity: 1;
+}
+
+.formulario ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+    background-color: black;
+    padding: 12px 12px;
+    border-radius: 20px;
+    height: 390px;
+    width: 400px;
+}
+
+.formulario li {
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+}
+
+.formulario input {
+    width: 300px;
+    height: 30px;
+    margin: 5px;
+}
+
+.formulario p {
+    margin: 5px;
+}
+
+li > p {
+    text-align: center;
+    color: white;
+}
+
+input {
+    text-align: center;
+    background-color: transparent;
+    color: white;
+}
+
+div > input {
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    width: 300px;
+    height: 40px;
+    margin: 5px;
+}
+
+div > input:hover {
+    background-color: white;
+    color: black;
+}
+
+ul > a {
+    text-decoration: none;
+    padding-top: 9px;
+    color: white;
+}
+
+ul > h1 {
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+span {
+    margin-top: -33px;
+    margin-left: 20px;
+    width: 10px;
+}
+
+.container_perfil {
+    margin: auto;
+    background-color: rgb(31, 86, 86);
+    height: 300px;
+    width: 500px;
+    padding: 12px 9px;
+    border-radius: 17px;
+}
+
+.container_perfil > p {
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.out {
+    display: flex;
+    justify-content: center;
+}
+
+a {
+    text-decoration: none;
+    padding-top: 9px;
+    color: black;
+}
+
+.foto {
+    display: flex;
+    margin: auto;
+}
+
+.card {
+    background-color: rgb(161, 239, 209);
+    height: 150px;
+    width: 200px;
+    padding: 12px 9px;
+    border-radius: 17px;
+    margin: 20px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.card > h3 {
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.categorias {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+button {
+    padding: 5px 5px;
+    margin-top: 9px;
+}
+
+.categorias > div {
+    margin: 20px;
+    border-radius: 12px;
+    background-color: turquoise;
+    padding: 9px 9px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-shadow: black 0.1em 0.1em 0.2em;
+    color: white;
+    text-align: center;
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+i {
+    margin-top: 160px;
+}
+
+.container_buton {
+    margin-top: 12px;
+}
+
+.container_title {
+    display: flex;
+    justify-content: center;
+    background-color: brown;
+    width: 100%;
+}
+
+.pantalla {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 300px;
+    border: 3px solid black;
+}
+
+.total {
+    width: 200px;
+    height: 60px;
+    margin-top: 240px;
+    border: 1px solid black;
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.options > button {
+    margin-left: 10px;
+}
+
+.info {
+    width: 500px;
+    height: 60px;
+    margin-top: 240px;
+    border: 1px solid black;
+}
+
+.info > h4 {
+    margin-top: 0px;
+}
+
+.formulario_cliente {
+    background-color: gray;
+    height: 160px;
+}
+
+.Registrar {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.formulario_cliente > input {
+    background-color: white;
+    justify-content: center;
+}

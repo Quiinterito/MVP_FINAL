@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Finanzas</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ccffcc; /* Fondo verde claro */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+            margin-top: 20px;
+        }
+        .button-container {
+            margin: 20px;
+        }
+        /* Botones de color azul */
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* Formulario de registro gasto */
+        .form-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .form-container input {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+        }
+        /* Tabla de registros */
+        #records-list {
+            margin-top: 20px;
+            width: 90%;
+            max-width: 1000px;
+            border-collapse: collapse;
+        }
+        #records-list, #records-list th, #records-list td {
+            border: 1px solid #007bff;
+        }
+        #records-list th, #records-list td {
+            padding: 10px;
+            text-align: left;
+        }
+        #records-list th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gestión de Finanzas</h1>
+    <div class="button-container">
+        <button id="register-expense-btn">Registro Gasto</button>
+        <button id="register-invoice-btn">Registro Factura</button>
+        <button id="list-expenses-btn">Listar Gastos</button>
+        <button id="list-invoices-btn">Listar Facturas</button>
+        <button id="delete-record-btn">Eliminar</button>
+        <button id="consult-record-btn">Consultar</button>
+        <button id="back-to-inicio-btn">Regresar al Inicio</button>
+    </div>
+
+    <!-- Formulario de registro gasto -->
+    <div class="form-container" id="expense-form-container">
+        <h2>Registrar Gasto</h2>
+        <input type="date" id="expense-date" placeholder="Fecha">
+        <input type="text" id="expense-code" placeholder="Código Gasto">
+        <input type="text" id="expense-type" placeholder="Tipo de Gasto">
+        <input type="text" id="expense-description" placeholder="Descripción">
+        <input type="number" id="expense-cost" placeholder="Costo">
+        <button id="save-expense-btn">Guardar Gasto</button>
+        <button class="back-to-main-btn">Regresar</button>
+    </div>
+
+    <!-- Formulario de registro factura -->
+    <div class="form-container" id="invoice-form-container">
+        <h2>Registrar Factura</h2>
+        <input type="date" id="invoice-date" placeholder="Fecha">
+        <input type="text" id="invoice-code" placeholder="Código Factura">
+        <input type="text" id="invoice-client" placeholder="Nombre de Cliente">
+        <input type="text" id="invoice-description" placeholder="Descripción">
+        <input type="number" id="invoice-total-value" placeholder="Valor Total">
+        <button id="save-invoice-btn">Guardar Factura</button>
+        <button class="back-to-main-btn">Regresar</button>
+    </div>
+
+    <!-- Tabla de gastos y facturas -->
+    <div id="records-list-container" style="display: none;">
+        <table id="records-list">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody id="records-list-body">
+                <!-- Gastos o Facturas se insertarán aquí -->
+            </tbody>
+        </table>
+        <button class="back-to-main-btn">Regresar</button>
+    </div>
+
+    <script>
+        const expenses = [];
+        const invoices = [];
+
+        // Mostrar formulario de registro de gasto
+        document.getElementById('register-expense-btn').onclick = function() {
+            document.getElementById('expense-form-container').style.display = 'flex';
+            document.querySelector('.button-container').style.display = 'none';
+        };
+
+        // Guardar gasto
+        document.getElementById('save-expense-btn').onclick = function() {
+            const date = document.getElementById('expense-date').value;
+            const code = document.getElementById('expense-code').value;
+            const type = document.getElementById('expense-type').value;
+            const description = document.getElementById('expense-description').value;
+            const cost = document.getElementById('expense-cost').value;
+
+            if (date && code && type && description && cost) {
+                expenses.push({ date, code, type, description, cost });
+                alert("Gasto registrado con éxito.");
+                document.getElementById('expense-form-container').style.display = 'none';
+                document.querySelector('.button-container').style.display = 'block';
+            } else {
+                alert("Por favor, complete todos los campos.");
+            }
+        };
+
+        // Mostrar formulario de registro de factura
+        document.getElementById('register-invoice-btn').onclick = function() {
+            document.getElementById('invoice-form-container').style.display = 'flex';
+            document.querySelector('.button-container').style.display = 'none';
+        };
+
+        // Guardar factura
+        document.getElementById('save-invoice-btn').onclick = function() {
+            const date = document.getElementById('invoice-date').value;
+            const code = document.getElementById('invoice-code').value;
+            const client = document.getElementById('invoice-client').value;
+            const description = document.getElementById('invoice-description').value;
+            const totalValue = document.getElementById('invoice-total-value').value;
+
+            if (date && code && client && description && totalValue) {
+                invoices.push({ date, code, client, description, totalValue });
+                alert("Factura registrada con éxito.");
+                document.getElementById('invoice-form-container').style.display = 'none';
+                document.querySelector('.button-container').style.display = 'block';
+            } else {
+                alert("Por favor, complete todos los campos.");
+            }
+        };
+
+        // Listar gastos
+        document.getElementById('list-expenses-btn').onclick = function() {
+            displayRecords(expenses);
+        };
+
+        // Listar facturas
+        document.getElementById('list-invoices-btn').onclick = function() {
+            displayRecords(invoices);
+        };
+
+        // Mostrar registros en la tabla
+        function displayRecords(records) {
+            const tableBody = document.getElementById('records-list-body');
+            tableBody.innerHTML = ''; // Limpiar tabla
+
+            records.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${record.date}</td><td>${record.code}</td><td>${record.description}</td><td>${record.totalValue || record.cost}</td>`;
+                tableBody.appendChild(row);
+            });
+
+            document.getElementById('records-list-container').style.display = 'block';
+            document.querySelector('.button-container').style.display = 'none';
+        }
+
+        // Eliminar por código
+        document.getElementById('delete-record-btn').onclick = function() {
+            const code = prompt("Ingrese el código del registro a eliminar:");
+            const expenseIndex = expenses.findIndex(expense => expense.code === code);
+            const invoiceIndex = invoices.findIndex(invoice => invoice.code === code);
+
+            if (expenseIndex !== -1) {
+                expenses.splice(expenseIndex, 1);
+                alert("Gasto eliminado con éxito.");
+            } else if (invoiceIndex !== -1) {
+                invoices.splice(invoiceIndex, 1);
+                alert("Factura eliminada con éxito.");
+            } else {
+                alert("Código no encontrado.");
+            }
+        };
+
+        // Consultar por código
+        document.getElementById('consult-record-btn').onclick = function() {
+            const code = prompt("Ingrese el código del registro a consultar:");
+            const record = expenses.find(expense => expense.code === code) || invoices.find(invoice => invoice.code === code);
+
+            if (record) {
+                alert(`Fecha: ${record.date}\nCódigo: ${record.code}\nDescripción: ${record.description}\nValor: ${record.totalValue || record.cost}`);
+            } else {
+                alert("Código no encontrado.");
+            }
+        };
+
+        // Botón de regresar a los botones principales
+        document.querySelectorAll('.back-to-main-btn').forEach(btn => {
+            btn.onclick = function() {
+                document.querySelector('.button-container').style.display = 'block';
+                document.getElementById('expense-form-container').style.display = 'none';
+                document.getElementById('invoice-form-container').style.display = 'none';
+                document.getElementById('records-list-container').style.display = 'none';
+            };
+        });
+
+        // Regresar al inicio
+        document.getElementById('back-to-inicio-btn').onclick = function() {
+            alert("Regresando a la página de inicio...");
+            window.location.href = "inicio.html"; // Cambia "inicio.html" a tu página de inicio real.
+        };
+    </script>
+</body>
+</html>

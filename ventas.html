@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo de Ventas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ccffcc; /* Fondo verde claro */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+            margin-top: 20px;
+        }
+        .button-container {
+            margin: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* Ventanas emergentes ampliadas */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .popup {
+            background-color: white;
+            padding: 20px;
+            width: 70%; /* Ventana más pequeña */
+            max-width: 800px;
+            border-radius: 8px;
+            text-align: center;
+            overflow-y: auto;
+        }
+        .popup input {
+            margin: 5px;
+            padding: 8px; /* Ajuste del tamaño de los campos */
+            font-size: 14px;
+            width: 80%; /* Reducción en el tamaño de los campos */
+        }
+        .popup table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+        .popup th, .popup td {
+            padding: 10px;
+            border: 1px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Módulo de Ventas</h1>
+    <div class="button-container">
+        <button onclick="showPopup('normalInvoiceForm')">Registrar Factura Normal</button>
+        <button onclick="showPopup('electronicInvoiceForm')">Registrar Factura Electrónica</button>
+        <button onclick="listInvoices('normal')">Listar Facturas Normales</button>
+        <button onclick="listInvoices('electronic')">Listar Facturas Electrónicas</button>
+        <button onclick="showPopup('registerCashier')">Registrar Cajero</button>
+        <button onclick="listCashiers()">Listar Cajeros</button>
+        <button onclick="promptDeleteInvoice()">Eliminar Factura por Código</button>
+        <button onclick="promptConsultInvoice()">Consultar Factura por Código</button>
+        <button onclick="window.location.href='inicio.html'">Regresar a Inicio</button>
+    </div>
+
+    <!-- Ventana emergente de Registro de Cajero -->
+    <div class="popup-container" id="registerCashier">
+        <div class="popup">
+            <h2>Registrar Cajero</h2>
+            <input type="date" id="cashierDate" placeholder="Fecha">
+            <input type="text" id="cashierCode" placeholder="Código de Cajero">
+            <input type="text" id="cashierName" placeholder="Nombre del Cajero">
+            <input type="text" id="cashierID" placeholder="Cédula">
+            <input type="email" id="cashierEmail" placeholder="Email">
+            <input type="tel" id="cashierPhone" placeholder="Teléfono">
+            <input type="text" id="cashierBoxNumber" placeholder="Número de Caja">
+            <button onclick="saveCashier()">Guardar</button>
+            <button onclick="closePopup()">Regresar</button>
+        </div>
+    </div>
+
+    <!-- Ventana emergente de Factura Normal -->
+    <div class="popup-container" id="normalInvoiceForm">
+        <div class="popup">
+            <h2>Registrar Factura Normal</h2>
+            <input type="date" id="normalDate" placeholder="Fecha">
+            <input type="text" id="normalCode" placeholder="Código de Factura">
+            <input type="text" id="normalProductCode" placeholder="Código de Producto">
+            <input type="text" id="normalCashierCode" placeholder="Código de Cajero">
+            <input type="text" id="normalProductName" placeholder="Nombre del Producto">
+            <input type="text" id="normalClientName" placeholder="Nombre del Cliente">
+            <input type="text" id="normalClientCode" placeholder="Código del Cliente">
+            <input type="text" id="normalClientID" placeholder="Cédula">
+            <input type="email" id="normalEmail" placeholder="Email">
+            <input type="tel" id="normalPhone" placeholder="Teléfono">
+            <input type="text" id="normalConcept" placeholder="Concepto Facturado">
+            <input type="text" id="normalDescription" placeholder="Descripción de la Factura">
+            <input type="number" id="normalTotal" placeholder="Valor Total">
+            <button onclick="saveInvoice('normal')">Guardar</button>
+            <button onclick="closePopup()">Regresar</button>
+        </div>
+    </div>
+
+    <!-- Ventana emergente de Factura Electrónica -->
+    <div class="popup-container" id="electronicInvoiceForm">
+        <div class="popup">
+            <h2>Registrar Factura Electrónica</h2>
+            <input type="date" id="electronicDate" placeholder="Fecha">
+            <input type="text" id="electronicCode" placeholder="Código de Factura">
+            <input type="text" id="electronicProductCode" placeholder="Código de Producto">
+            <input type="text" id="electronicCashierCode" placeholder="Código de Cajero">
+            <input type="text" id="electronicProductName" placeholder="Nombre del Producto">
+            <input type="text" id="electronicClientName" placeholder="Nombre del Cliente">
+            <input type="text" id="electronicClientCode" placeholder="Código del Cliente">
+            <input type="text" id="electronicClientID" placeholder="Cédula">
+            <input type="email" id="electronicEmail" placeholder="Email">
+            <input type="tel" id="electronicPhone" placeholder="Teléfono">
+            <input type="text" id="electronicConcept" placeholder="Concepto Facturado">
+            <input type="text" id="electronicDescription" placeholder="Descripción de la Factura">
+            <input type="text" id="electronicQR" placeholder="Código QR">
+            <input type="number" id="electronicTotal" placeholder="Valor Total">
+            <button onclick="saveInvoice('electronic')">Guardar</button>
+            <button onclick="closePopup()">Regresar</button>
+        </div>
+    </div>
+
+    <!-- Ventana emergente para mostrar las listas de facturas -->
+    <div class="popup-container" id="listInvoices">
+        <div class="popup">
+            <h2 id="listTitle"></h2>
+            <table id="invoiceTable">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Código de Factura</th>
+                        <th>Código de Producto</th>
+                        <th>Nombre de Producto</th>
+                        <th>Cliente</th>
+                        <th>Código Cliente</th>
+                        <th>Cédula</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Concepto</th>
+                        <th>Descripción</th>
+                        <th>Valor Total</th>
+                        <th>Código QR</th>
+                        <th>Código Cajero</th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceList">
+                    <!-- Lista de facturas aquí -->
+                </tbody>
+            </table>
+            <button onclick="closePopup()">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Ventana emergente para listar Cajeros -->
+    <div class="popup-container" id="listCashiers">
+        <div class="popup">
+            <h2>Lista de Cajeros</h2>
+            <table id="cashierTable">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Código de Cajero</th>
+                        <th>Nombre del Cajero</th>
+                        <th>Cédula</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Número de Caja</th>
+                    </tr>
+                </thead>
+                <tbody id="cashierList">
+                    <!-- Lista de cajeros aquí -->
+                </tbody>
+            </table>
+            <button onclick="closePopup()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        const invoices = {
+            normal: [],
+            electronic: []
+        };
+
+        const cashiers = [];
+
+        function closePopup() {
+            document.querySelectorAll('.popup-container').forEach(popup => popup.style.display = 'none');
+        }
+
+        function showPopup(id) {
+            closePopup();
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function saveInvoice(type) {
+            const date = document.getElementById(`${type}Date`).value;
+            const code = document.getElementById(`${type}Code`).value;
+            const productCode = document.getElementById(`${type}ProductCode`).value;
+            const cashierCode = document.getElementById(`${type}CashierCode`).value;
+            const productName = document.getElementById(`${type}ProductName`).value;
+            const clientName = document.getElementById(`${type}ClientName`).value;
+            const clientCode = document.getElementById(`${type}ClientCode`).value;
+            const clientID = document.getElementById(`${type}ClientID`).value;
+            const email = document.getElementById(`${type}Email`).value;
+            const phone = document.getElementById(`${type}Phone`).value;
+            const concept = document.getElementById(`${type}Concept`).value;
+            const description = document.getElementById(`${type}Description`).value;
+            const total = document.getElementById(`${type}Total`).value;
+            const qr = type === 'electronic' ? document.getElementById(`${type}QR`).value : null;
+
+            const invoice = {
+                date,
+                code,
+                productCode,
+                cashierCode,
+                productName,
+                clientName,
+                clientCode,
+                clientID,
+                email,
+                phone,
+                concept,
+                description,
+                total,
+                qr
+            };
+
+            invoices[type].push(invoice);
+
+            // Limpiar los campos del formulario
+            
+            document.querySelectorAll(`#${type}InvoiceForm input`).forEach(input => input.value = '');
+            closePopup();
+        }
+
+        function saveCashier() {
+            const date = document.getElementById("cashierDate").value;
+            const cashierCode = document.getElementById("cashierCode").value;
+            const cashierName = document.getElementById("cashierName").value;
+            const cashierID = document.getElementById("cashierID").value;
+            const cashierEmail = document.getElementById("cashierEmail").value;
+            const cashierPhone = document.getElementById("cashierPhone").value;
+            const cashierBoxNumber = document.getElementById("cashierBoxNumber").value;
+
+            const cashier = {
+                date,
+                cashierCode,
+                cashierName,
+                cashierID,
+                cashierEmail,
+                cashierPhone,
+                cashierBoxNumber
+            };
+
+            cashiers.push(cashier);
+
+            // Limpiar los campos del formulario
+            document.querySelectorAll('#registerCashier input').forEach(input => input.value = '');
+            closePopup();
+        }
+
+        function listInvoices(type) {
+            const invoiceList = document.getElementById("invoiceList");
+            const listTitle = document.getElementById("listTitle");
+
+            invoiceList.innerHTML = '';
+            listTitle.textContent = type === 'normal' ? 'Facturas Normales' : 'Facturas Electrónicas';
+
+            invoices[type].forEach(invoice => {
+                const row = document.createElement("tr");
+                Object.values(invoice).forEach(value => {
+                    const cell = document.createElement("td");
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+                invoiceList.appendChild(row);
+            });
+
+            showPopup('listInvoices');
+        }
+
+        function listCashiers() {
+            const cashierList = document.getElementById("cashierList");
+            cashierList.innerHTML = '';
+
+            cashiers.forEach(cashier => {
+                const row = document.createElement("tr");
+                Object.values(cashier).forEach(value => {
+                    const cell = document.createElement("td");
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+                cashierList.appendChild(row);
+            });
+
+            showPopup('listCashiers');
+        }
+
+        function promptDeleteInvoice() {
+            const code = prompt("Ingrese el código de la factura a eliminar:");
+            deleteInvoice(code);
+        }
+
+        function deleteInvoice(code) {
+            let deleted = false;
+            ['normal', 'electronic'].forEach(type => {
+                const index = invoices[type].findIndex(invoice => invoice.code === code);
+                if (index !== -1) {
+                    invoices[type].splice(index, 1);
+                    deleted = true;
+                }
+            });
+
+            if (deleted) alert("Factura eliminada correctamente.");
+            else alert("Factura no encontrada.");
+        }
+
+        function promptConsultInvoice() {
+            const code = prompt("Ingrese el código de la factura a consultar:");
+            consultInvoice(code);
+        }
+
+        function consultInvoice(code) {
+            let found = false;
+            ['normal', 'electronic'].forEach(type => {
+                const invoice = invoices[type].find(invoice => invoice.code === code);
+                if (invoice) {
+                    let invoiceDetails = '';
+                    for (const key in invoice) {
+                        if (invoice.hasOwnProperty(key)) {
+                            invoiceDetails += `${key}: ${invoice[key]}\n`;
+                        }
+                    }
+                    alert(`Factura encontrada:\n${invoiceDetails}`);
+                    found = true;
+                }
+            });
+
+            if (!found) alert("Factura no encontrada.");
+        }
+    </script>
+</body>
+</html>
+
